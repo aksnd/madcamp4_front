@@ -8,7 +8,7 @@ function App() {
   const [message, setMessage] = useState('');
 
   const handleGetRequest = () => {
-    fetch(`http://127.0.0.1:8000/simple-text/${inputValue}/`)
+    fetch(`http://52.78.53.98:8000/simple-text/${inputValue}/`)
       .then(response => response.json())
       .then(data => setMessage(data.message))
       .catch(error => console.error('Error:', error));
