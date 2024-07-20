@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { Link } from 'react-router-dom';
 const MainPage = () => {
   return (
     <Container>
@@ -27,6 +27,11 @@ const MainPage = () => {
           </UpdateList>
         </Sidebar>
       </MainContent>
+      <ButtonContainer>
+        <NavigateLink to="/company">Go to Company Page</NavigateLink>
+        <NavigateLink to="/chatbot">Go to Chatbot Page</NavigateLink>
+        <NavigateLink to="/predictor">Go to Stock Predictor</NavigateLink>
+      </ButtonContainer>
     </Container>
   );
 };
@@ -116,6 +121,28 @@ const UpdateItem = styled.li`
 
   &:last-child {
     border-bottom: none;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const NavigateLink = styled(Link)`
+  padding: 10px 20px;
+  font-size: 16px;
+  text-decoration: none;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+
+  &:hover {
+    background-color: #0056b3;
   }
 `;
 
