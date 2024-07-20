@@ -1,18 +1,61 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const ChatbotPage = () => {
+  const [messages, setMessages] = useState([
+    { sender: 'Bot', text: 'Hello! How can I assist you today?' },
+  ]);
+  const [input, setInput] = useState('');
+
+  const handleSend = async () => {
+    if (input.trim() === '') return;
+
+    // Add user message to chat
+    setMessages([...messages, { sender: 'User', text: input }]);
+
+    try {
+      // Send user input to backend
+      const response = await axios.post('http://52.78.53.98:8000/api/chatbot/', { input });
+      
+      // Add bot response to chat
+      setMessages([
+        ...messages,
+        { sender: 'User', text: input },
+        { sender: 'Bot', text: response.data.answer },
+      ]);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setMessages([
+        ...messages,
+        { sender: 'User', text: input },
+        { sender: 'Bot', text: 'Sorry, something went wrong.' },
+      ]);
+    }
+
+    // Clear input field
+    setInput('');
+  };
+
   return (
     <Container>
       <Header>Stock Chatbot</Header>
       <ChatContainer>
         <Messages>
-          <Message>User: How's the market today?</Message>
-          <Message>Bot: The market is up by 2% today.</Message>
+          {messages.map((msg, index) => (
+            <Message key={index} sender={msg.sender}>
+              {msg.text}
+            </Message>
+          ))}
         </Messages>
         <InputContainer>
-          <Input type="text" placeholder="Ask a question..." />
-          <Button>Send</Button>
+          <Input
+            type="text"
+            placeholder="Ask a question..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <Button onClick={handleSend}>Send</Button>
         </InputContainer>
       </ChatContainer>
     </Container>
@@ -47,6 +90,11 @@ const Messages = styled.div`
 const Message = styled.div`
   padding: 10px;
   border-bottom: 1px solid #eee;
+  align-self: ${(props) => (props.sender === 'Bot' ? 'flex-start' : 'flex-end')};
+  background-color: ${(props) => (props.sender === 'Bot' ? '#f1f1f1' : '#007bff')};
+  color: ${(props) => (props.sender === 'Bot' ? '#000' : '#fff')};
+  border-radius: 5px;
+  max-width: 70%;
 `;
 
 const InputContainer = styled.div`
