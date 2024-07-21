@@ -1,27 +1,25 @@
 import React, { useState } from 'react';
 
 function StockPredictor() {
-  const [ticker, setTicker] = useState('');
+  const [company, setCompany] = useState('');
   const [price, setPrice] = useState(null);
-  const [predictPrice, setPredictPrice] = useState(null);
   const [articles, setArticles] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const response = await fetch(`http://52.78.53.98:8000/predict/?ticker=${ticker}`);
-    // const data = await response.json();
-    // setPrice(data.price);
-    // setPredictPrice(data.prediction);
-    // setArticles(data.articles);
-    setPrice(16000); // 나중에는 yfinance를 통해 서버에서 가져올 예정
-    setPredictPrice(14000); // 나중에는 예측한 주가를 가져올 예정
+    const response = await fetch(`http://52.78.53.98:8000/predict/?company=${company}`);
+    const data = await response.json();
+    setPrice(data.price);
+    setArticles(data.articles);
+    //setPrice(16000); // 나중에는 yfinance를 통해 서버에서 가져올 예정
+    //setPredictPrice(14000); // 나중에는 예측한 주가를 가져올 예정
 
     // 임시 기사 데이터 설정
-    setArticles([
-      { title: 'Company A achieves record sales', expection: -0.022376789, link: 'https://example.com/article1' },
-      { title: 'Company B faces regulatory challenges', expection: 0.02324515, link: 'https://example.com/article2' },
-      { title: 'Company C announces new product line', expection: 0.01231235, link: 'https://example.com/article3' },
-    ]);
+    //setArticles([
+    //  { title: 'Company A achieves record sales', expection: -0.022376789, link: 'https://example.com/article1' },
+    //  { title: 'Company B faces regulatory challenges', expection: 0.02324515, link: 'https://example.com/article2' },
+    //  { title: 'Company C announces new product line', expection: 0.01231235, link: 'https://example.com/article3' },
+    //]);
   };
 
   return (
@@ -31,21 +29,19 @@ function StockPredictor() {
         <form onSubmit={handleSubmit} style={styles.predictorForm}>
           <label>
             Company:
-            <select value={ticker} onChange={(e) => setTicker(e.target.value)} required style={styles.select}>
+            <select value={company} onChange={(e) => setCompany(e.target.value)} required style={styles.select}>
               <option value="">Select a company</option>
-              <option value="042660.KS">한화오션</option>
-              <option value="010130.KS">고려아연</option>
-              <option value="001570.KS">금양</option>
-              <option value="001450.KS">현대해상</option>
+              <option value="한화오션">한화오션</option>
+              <option value="고려아연">고려아연</option>
+              <option value="금양">금양</option>
+              <option value="현대해상">현대해상</option>
             </select>
           </label>
           <button type="submit" style={styles.button}>Predict</button>
         </form>
         {price && (
           <div style={styles.result}>
-            <h2>예측 가격: {predictPrice}</h2>
             <h2>가격: {price}</h2>
-            <h2>상승폭: {((predictPrice / price - 1) * 100).toFixed(3)}%</h2>
           </div>
         )}
       </div>
@@ -58,7 +54,7 @@ function StockPredictor() {
                 <h4>{article.title}</h4>
                 <a href={article.link} target="_blank" rel="noopener noreferrer">{article.link}</a>
               </div>
-              <p style={styles.expection}>{(article.expection * 100).toFixed(3)}%</p>
+              <p style={styles.expection}>{(article.emotion)}</p>
             </div>
           ))}
         </div>
