@@ -64,21 +64,29 @@ const ChatbotPage = () => {
 
 const Container = styled.div`
   padding: 20px;
+  background: #f7f9fc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Header = styled.h1`
   font-size: 2.5rem;
   margin-bottom: 20px;
+  color: #343a40;
 `;
 
 const ChatContainer = styled.div`
   background: #fff;
   padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   height: 500px;
+  width: 100%;
+  max-width: 600px;
 `;
 
 const Messages = styled.div`
@@ -89,11 +97,11 @@ const Messages = styled.div`
 
 const Message = styled.div`
   padding: 10px;
-  border-bottom: 1px solid #eee;
+  margin-bottom: 10px;
   align-self: ${(props) => (props.sender === 'Bot' ? 'flex-start' : 'flex-end')};
-  background-color: ${(props) => (props.sender === 'Bot' ? '#f1f1f1' : '#007bff')};
+  background-color: ${(props) => (props.sender === 'Bot' ? '#e9ecef' : '#007bff')};
   color: ${(props) => (props.sender === 'Bot' ? '#000' : '#fff')};
-  border-radius: 5px;
+  border-radius: 15px;
   max-width: 70%;
 `;
 
@@ -104,8 +112,8 @@ const InputContainer = styled.div`
 const Input = styled.input`
   flex: 1;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
   margin-right: 10px;
 `;
 
@@ -114,7 +122,7 @@ const Button = styled.button`
   background: #007bff;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
 
   &:hover {
