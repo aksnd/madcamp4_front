@@ -42,7 +42,7 @@ const Drawer = styled.div`
   left: 0;
   width: 250px;
   height: 100%;
-  background-color: #333;
+  background-color: #343a40;
   color: white;
   transition: transform 0.3s ease-in-out;
   transform: ${(props) => (props.open ? 'translateX(0)' : 'translateX(-100%)')};
@@ -66,9 +66,11 @@ const NavLink = styled(Link)`
   text-decoration: none;
   color: white;
   font-size: 1.2rem;
+  padding: 10px;
+  border-radius: 5px;
 
   &:hover {
-    color: #007bff;
+    background-color: rgba(255, 255, 255, 0.1);
   }
 `;
 
