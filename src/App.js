@@ -6,6 +6,7 @@ import EmotionPage from './pages/EmotionPage';
 import ChatbotPage from './pages/ChatbotPage';
 import StockPredictor from './pages/StockPredictor';
 import DrawerMenu from './components/DrawerMenu';
+import KakaoLogin from './pages/KaKaoLoginPage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/emotion" element={<EmotionPage />} />
         <Route path="/chatbot" element={<ChatbotPage />} />
         <Route path="/predictor" element={<StockPredictor />} />
+        <Route path="/kakao" element={<KakaoLogin />} />
       </Routes>
     </Router>
   );
