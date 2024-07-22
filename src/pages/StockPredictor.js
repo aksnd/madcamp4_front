@@ -1,63 +1,72 @@
 import React, { useState } from 'react';
 
 function StockPredictor() {
-  const [company, setCompany] = useState('');
+  const [selectedCompany, setSelectedCompany] = useState(null);
   const [price, setPrice] = useState(null);
   const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const companies = [
+    { name: '한화오션', icon: '🌊' },
+    { name: '고려아연', icon: '🔧' },
+    { name: '금양', icon: '💰' },
+    { name: '현대해상', icon: '🚢' },
+  ];
+
+  const handleCompanyClick = async (company) => {
+    setSelectedCompany(company);
+    setLoading(true);
     const response = await fetch(`http://52.78.53.98:8000/predict/?company=${company}`);
     const data = await response.json();
     setPrice(data.price);
     setArticles(data.articles);
-    //setPrice(16000); // 나중에는 yfinance를 통해 서버에서 가져올 예정
-    //setPredictPrice(14000); // 나중에는 예측한 주가를 가져올 예정
-
-    // 임시 기사 데이터 설정
-    //setArticles([
-    //  { title: 'Company A achieves record sales', expection: -0.022376789, link: 'https://example.com/article1' },
-    //  { title: 'Company B faces regulatory challenges', expection: 0.02324515, link: 'https://example.com/article2' },
-    //  { title: 'Company C announces new product line', expection: 0.01231235, link: 'https://example.com/article3' },
-    //]);
+    setLoading(false);
   };
 
   return (
     <div style={styles.container}>
-      <h1>Stock Price Predictor</h1>
-      <div style={styles.formAndResult}>
-        <form onSubmit={handleSubmit} style={styles.predictorForm}>
-          <label>
-            Company:
-            <select value={company} onChange={(e) => setCompany(e.target.value)} required style={styles.select}>
-              <option value="">Select a company</option>
-              <option value="한화오션">한화오션</option>
-              <option value="고려아연">고려아연</option>
-              <option value="금양">금양</option>
-              <option value="현대해상">현대해상</option>
-            </select>
-          </label>
-          <button type="submit" style={styles.button}>Predict</button>
-        </form>
-        {price && (
-          <div style={styles.result}>
-            <h2>가격: {price}</h2>
-          </div>
-        )}
-      </div>
-      {articles.length > 0 && (
-        <div style={styles.articles}>
-          <h3>관련 기사</h3>
-          {articles.map((article, index) => (
-            <div key={index} style={styles.article}>
-              <div>
-                <h4>{article.title}</h4>
-                <a href={article.link} target="_blank" rel="noopener noreferrer">{article.link}</a>
+      {!selectedCompany || loading ? (
+        <>
+          <h1>원하는 회사를 선택하세요</h1>
+          <div style={styles.companyList}>
+            {companies.map((company) => (
+              <div
+                key={company.name}
+                style={styles.companyItem}
+                onClick={() => handleCompanyClick(company.name)}
+              >
+                <div style={styles.companyIcon}>{company.icon}</div>
+                <div style={styles.companyName}>{company.name}</div>
               </div>
-              <p style={styles.expection}>{(article.emotion)}</p>
+            ))}
+          </div>
+        </>
+      ) : (
+        <>
+          {loading ? (
+            <div style={styles.loading}>
+              <div className="loader"></div>
             </div>
-          ))}
-        </div>
+          ) : (
+            <>
+              <div style={styles.result}>
+                <h2>{selectedCompany}의 오늘 점수: {price}</h2>
+              </div>
+              <div style={styles.articles}>
+                <h3>관련 기사</h3>
+                {articles.map((article, index) => (
+                  <div key={index} style={styles.article}>
+                    <div>
+                      <h4>{article.title}</h4>
+                      <a href={article.link} target="_blank" rel="noopener noreferrer">{article.link}</a>
+                    </div>
+                    <p style={styles.expection}>{article.emotion}</p>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </>
       )}
     </div>
   );
@@ -69,37 +78,49 @@ const styles = {
     textAlign: 'center',
     margin: '20px',
   },
-  formAndResult: {
+  companyList: {
     display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: '20px',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginBottom: '40px',
+    gap: '20px',
+    marginTop: '40px', // 간격 추가
   },
-  predictorForm: {
-    textAlign: 'left',
-  },
-  select: {
-    padding: '10px',
-    fontSize: '16px',
-    marginLeft: '10px',
-    width: '200px',
-  },
-  button: {
-    padding: '10px 20px',
-    marginLeft: '20px',
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    border: 'none',
+  companyItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: '1px solid #ddd',
+    borderRadius: '10px',
+    padding: '40px',
+    margin: '10px',
     cursor: 'pointer',
-    fontSize: '16px',
+    width: '200px',
+    height: '200px',
+    boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+  },
+  companyIcon: {
+    fontSize: '50px',
+    marginBottom: '10px',
+  },
+  companyName: {
+    fontSize: '18px',
+    fontWeight: 'bold',
+  },
+  loading: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100px',
+    marginTop: '20px',
   },
   result: {
     backgroundColor: '#f9f9f9',
     border: '1px solid #ddd',
     padding: '20px',
-    textAlign: 'left',
-    marginLeft: '20px',
-    minWidth: '200px',
+    textAlign: 'center',
+    marginTop: '20px',
   },
   articles: {
     marginTop: '20px',

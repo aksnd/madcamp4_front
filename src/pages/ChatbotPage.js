@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const ChatbotPage = () => {
   const [messages, setMessages] = useState([
-    { sender: 'Bot', text: 'Hello! How can I assist you today?' },
+    { sender: 'Bot', text: '안녕하세요! 어떻게 도와드릴까요?' },
   ]);
   const [input, setInput] = useState('');
 
