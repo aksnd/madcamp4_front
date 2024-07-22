@@ -21,6 +21,7 @@ function StockPredictor() {
     setPrice(data.price);
     setArticles(data.articles);
     setLoading(false);
+
   };
 
   return (
@@ -46,6 +47,7 @@ function StockPredictor() {
           {loading ? (
             <div style={styles.loading}>
               <div className="loader"></div>
+
             </div>
           ) : (
             <>
@@ -129,10 +131,17 @@ const styles = {
   article: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center',
     borderBottom: '1px solid #ddd',
     paddingBottom: '10px',
     marginBottom: '10px',
+  },
+  articleContent: {
+    flex: '1',
+  },
+  expectionContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
   },
   expection: {
     fontSize: '18px',
