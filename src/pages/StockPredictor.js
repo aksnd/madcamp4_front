@@ -11,15 +11,6 @@ function StockPredictor() {
     const data = await response.json();
     setPrice(data.price);
     setArticles(data.articles);
-    //setPrice(16000); // 나중에는 yfinance를 통해 서버에서 가져올 예정
-    //setPredictPrice(14000); // 나중에는 예측한 주가를 가져올 예정
-
-    // 임시 기사 데이터 설정
-    //setArticles([
-    //  { title: 'Company A achieves record sales', expection: -0.022376789, link: 'https://example.com/article1' },
-    //  { title: 'Company B faces regulatory challenges', expection: 0.02324515, link: 'https://example.com/article2' },
-    //  { title: 'Company C announces new product line', expection: 0.01231235, link: 'https://example.com/article3' },
-    //]);
   };
 
   return (
@@ -31,6 +22,7 @@ function StockPredictor() {
             Company:
             <select value={company} onChange={(e) => setCompany(e.target.value)} required style={styles.select}>
               <option value="">Select a company</option>
+              <option value="삼성전자">삼성전자</option>
               <option value="한화오션">한화오션</option>
               <option value="고려아연">고려아연</option>
               <option value="금양">금양</option>
@@ -50,11 +42,14 @@ function StockPredictor() {
           <h3>관련 기사</h3>
           {articles.map((article, index) => (
             <div key={index} style={styles.article}>
-              <div>
+              <div style={styles.articleContent}>
                 <h4>{article.title}</h4>
                 <a href={article.link} target="_blank" rel="noopener noreferrer">{article.link}</a>
               </div>
-              <p style={styles.expection}>{(article.emotion)}</p>
+              <div style={styles.expectionContainer}>
+                <p style={styles.expection}>감정분석 결과: {article.emotion}</p>
+                <p style={styles.expection}>연관성 분석 결과: {article.relevance}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -108,10 +103,17 @@ const styles = {
   article: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center',
     borderBottom: '1px solid #ddd',
     paddingBottom: '10px',
     marginBottom: '10px',
+  },
+  articleContent: {
+    flex: '1',
+  },
+  expectionContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
   },
   expection: {
     fontSize: '18px',
