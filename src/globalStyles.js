@@ -15,6 +15,7 @@ const GlobalStyle = createGlobalStyle`
 
   h1, h2, h3, h4, h5, h6 {
     color: #3e4a61; /* 진한 파스텔 블루 텍스트 */
+    font-family: 'Roboto', sans-serif;
   }
 
   p {

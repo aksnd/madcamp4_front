@@ -2,17 +2,19 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import GlobalStyle from './globalStyles';
 import MainPage from './pages/MainPage';
-import CompanyPage from './pages/CompanyPage';
+import EmotionPage from './pages/EmotionPage';
 import ChatbotPage from './pages/ChatbotPage';
 import StockPredictor from './pages/StockPredictor';
+import DrawerMenu from './components/DrawerMenu';
 
 function App() {
   return (
     <Router>
       <GlobalStyle />
+      <DrawerMenu />
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/company" element={<CompanyPage />} />
+        <Route path="/emotion" element={<EmotionPage />} />
         <Route path="/chatbot" element={<ChatbotPage />} />
         <Route path="/predictor" element={<StockPredictor />} />
       </Routes>
