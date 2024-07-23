@@ -10,6 +10,18 @@ function EmotionPage() {
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [submit, setSubmit] = useState(false);
   const companies = [
+    { name: '삼성전자', icon: '📱' },
+    { name: 'SK하이닉스', icon: '🔌' }, 
+    { name: 'LG에너지솔루션', icon: '🔋' },
+    { name: '삼성바이오로직스', icon: '🧬' },
+    { name: '현대차', icon: '🚗' },
+    { name: '기아', icon: '🚙' },
+    { name: '셀트리온', icon: '💊' },
+    { name: 'KB금융', icon: '💳' },
+    { name: 'POSCO홀딩스', icon: '🏭' },
+    { name: 'NAVER', icon: '🌐' },
+    { name: '삼성생명', icon: '💼' }, 
+    { name: 'LG전자', icon: '📺' },   
     { name: '한화오션', icon: '🌊' },
     { name: '고려아연', icon: '🔧' },
     { name: '금양', icon: '💰' },
@@ -52,6 +64,7 @@ function EmotionPage() {
     <div style={styles.container}>
       {!submit && !loading ? (
         <>
+          <h1>원하는 회사를 선택하거나, 직접 입력해주세요</h1>
           <form style={searchSubmitted ? styles.searchFormSubmitted : styles.searchForm}>
             <input
               type="text"
@@ -63,7 +76,6 @@ function EmotionPage() {
             />
             <button onClick={handleSubmit} style={styles.searchButton}>검색</button>
           </form>
-          <h1>원하는 회사를 선택하세요</h1>
           <div style={styles.companyList}>
             {companies.map((company) => (
               <div
@@ -117,12 +129,14 @@ const styles = {
     margin: '20px',
   },
   companyList: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    marginBottom: '40px',
-    gap: '20px',
-    marginTop: '40px', // 간격 추가
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)', // 4 열
+    gap: '16px', // 아이템 간 간격
+    padding: '16px',
+    justifyContent: 'center', // 가로 정렬
+    alignItems: 'center', // 세로 정렬
+    margin: '0 auto', // 가운데 정렬
+    maxWidth: '800px' // 그리드 최대 너비
   },
   companyItem: {
     display: 'flex',
@@ -148,7 +162,7 @@ const styles = {
   },
   searchForm: {
     margin: '0 auto',
-    marginTop: '200px', // 중앙에 위치하도록 설정
+    marginTop: '20px', // 중앙에 위치하도록 설정
     transition: 'margin-top 0.5s ease',
   },
   searchFormSubmitted: {
