@@ -8,6 +8,7 @@ import StockPredictor from './pages/StockPredictor';
 import DrawerMenu from './components/DrawerMenu';
 import KakaoLogin from './pages/KaKaoLoginPage';
 import LoginSuccessPage from './pages/LoginSuccessPage';
+import NewsPage from './pages/NewsPage';
 
 function App() {
   const [kakaoId, setKakaoId] = useState(null);
@@ -30,6 +31,7 @@ function App() {
                       <Route path="/emotion" element={<EmotionPage />} />
                       <Route path="/chatbot" element={<ChatbotPage />} />
                       <Route path="/predictor" element={<StockPredictor />} />
+                      <Route path="/news" element={<NewsPage />} />
                   </>
               ) : (
                   <Route path="*" element={<KakaoLogin />} />
