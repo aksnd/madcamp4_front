@@ -52,7 +52,7 @@ function StockPredictor() {
           ) : (
             <>
               <div style={styles.result}>
-                <h2>{selectedCompany}의 오늘 점수: {price}</h2>
+                <h2>{selectedCompany}의 오늘 FSSDFSDFSEDFSDFSFSFFFSF점수: {price}</h2>
               </div>
               <div style={styles.articles}>
                 <h3>관련 기사</h3>
