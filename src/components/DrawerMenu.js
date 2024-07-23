@@ -19,9 +19,9 @@ const DrawerMenu = () => {
         <DrawerContent>
           <DrawerCloseButton onClick={toggleDrawer}>×</DrawerCloseButton>
           <NavLink to="/" onClick={toggleDrawer}>Main Page</NavLink>
-          <NavLink to="/emotion" onClick={toggleDrawer}>Emotion Page</NavLink>
+          <NavLink to="/emotion" onClick={toggleDrawer}>Company Page</NavLink>
           <NavLink to="/chatbot" onClick={toggleDrawer}>Chatbot Page</NavLink>
-          <NavLink to="/predictor" onClick={toggleDrawer}>Stock Predictor</NavLink>
+          <NavLink to="/logout" onClick={toggleDrawer}>Logout</NavLink>
           <NavLink to="/news" onClick={toggleDrawer}>News Page</NavLink>
         </DrawerContent>
       </Drawer>
