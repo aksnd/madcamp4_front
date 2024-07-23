@@ -1,6 +1,27 @@
 import React, { useState } from 'react';
 import '../App.css'; // CSS 파일 import
 import CircularProgress from '@mui/material/CircularProgress';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function EmotionPage() {
   const [company, setCompany] = useState('');
@@ -8,6 +29,7 @@ function EmotionPage() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchSubmitted, setSearchSubmitted] = useState(false);
+  const [historicalData, setHistoricalData] = useState([]);
   const [submit, setSubmit] = useState(false);
   const companies = [
     { name: '삼성전자', icon: '📱' },
@@ -34,10 +56,24 @@ function EmotionPage() {
     const response = await fetch(`http://52.78.53.98:8000/predict/?company=${company}`);
     const data = await response.json();
     setPrice(data.price);
+    setHistoricalData(data.historical_data);
     setArticles(data.articles);
     setLoading(false);
     setSubmit(true);
   };
+
+  const chartData = {
+    labels: historicalData.map(entry => entry.Date),
+    datasets: [
+        {
+            label: `${company} Historical Price`,
+            data: historicalData.map(entry => entry.Close),
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }
+    ]
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -98,6 +134,7 @@ function EmotionPage() {
 
               <div style={styles.result}>
                 {price? (<h2>{company}의 오늘 가격: {price}</h2>):null}
+                <Line data={chartData} />
                 <h3>평균 감정 점수: {calculateEmotionAverage().toFixed(2)}</h3>
                 <h3>내일 주가 예측: {`${calculatefuture().toFixed(2)}% 변동`}</h3>
               </div>
