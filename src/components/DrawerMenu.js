@@ -22,6 +22,7 @@ const DrawerMenu = () => {
           <NavLink to="/emotion" onClick={toggleDrawer}>Emotion Page</NavLink>
           <NavLink to="/chatbot" onClick={toggleDrawer}>Chatbot Page</NavLink>
           <NavLink to="/predictor" onClick={toggleDrawer}>Stock Predictor</NavLink>
+          <NavLink to="/news" onClick={toggleDrawer}>News Page</NavLink>
         </DrawerContent>
       </Drawer>
     </div>
