@@ -31,6 +31,9 @@ function EmotionPage() {
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [historicalData, setHistoricalData] = useState([]);
   const [submit, setSubmit] = useState(false);
+  const [hoverIndex, setHoverIndex] = useState(null);
+
+
   const companies = [
     { name: '삼성전자', icon: '📱' },
     { name: 'SK하이닉스', icon: '🔌' }, 
@@ -49,6 +52,28 @@ function EmotionPage() {
     { name: '금양', icon: '💰' },
     { name: '현대해상', icon: '🚢' },
   ];
+  // 마우스 올려두는것과 관련있는 함수
+  const handleMouseEnter = (index) => {
+    setHoverIndex(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoverIndex(null);
+  };
+
+  const handleClick = (link) => {
+    window.open(link, "_blank", "noopener noreferrer");
+  };
+
+  const getEmotionColor = (emotion) => {
+    if (emotion > 6) {
+      return "#f44336"; // 긍정적인 감정 (빨강)
+    } else if (emotion < 4) {
+      return "#2196f3"; // 부정적인 감정 (파랑)
+    } else {
+      return "#9e9e9e"; // 중립적인 감정 (회색)
+    }
+  };
 
   const handleCompanyClick = async (company) => {
     setCompany(company);
@@ -100,7 +125,7 @@ function EmotionPage() {
     const data = await response.json();
     setPrice(null);
     setArticles(data.articles);
-    setHistoricalData(null);
+    setHistoricalData([]);
     setLoading(false);
     setSubmit(true);
   };
@@ -169,16 +194,23 @@ function EmotionPage() {
                  </div>
                 </div>):null}
                 <div style={styles.articles}>
-                  <h3>관련 기사</h3>
-                  <h3>평균 감정 점수: {calculateEmotionAverage().toFixed(2)}</h3>
-                  <h3>내일 주가 예측: {`${calculatefuture().toFixed(2)}% 변동`}</h3>
+                  <h2 style={{color: getEmotionColor(calculateEmotionAverage().toFixed(2))}}>평균 감정 점수: {calculateEmotionAverage().toFixed(2)}</h2>
+                  <h2>내일 주가 예측: {`${calculatefuture().toFixed(2)}% 변동`}</h2>
                   {articles.map((article, index) => (
                     <div key={index} style={styles.article}>
-                      <div>
-                        <h4>{article.title}</h4>
-                        <a href={article.link} target="_blank" rel="noopener noreferrer">{article.link}</a>
+                      
+                      <div
+                        onMouseEnter={() => handleMouseEnter(index)}
+                        onMouseLeave={handleMouseLeave}
+                        onClick={() => handleClick(article.link)}
+                      >
+                        <h4 style={{
+                          ...styles.summary,
+                          ...(hoverIndex === index ? styles.summaryHover : {}),
+                        }}
+                        >{article.summary}</h4>
+                        <p style={{...styles.expection, color: getEmotionColor(article.emotion)}}>기사 점수 평가:{article.emotion}점 으로 분석했어요!</p>
                       </div>
-                      <p style={styles.expection}>{article.emotion}</p>
                     </div>
                   ))}
                 </div>
@@ -274,7 +306,7 @@ const styles = {
     top: '10px',
     right: '10px',
     padding: '10px 20px',
-    backgroundColor: '#007bff',
+    backgroundColor: '#00AFFF',
     color: '#fff',
     border: 'none',
     borderRadius: '5px',
@@ -294,25 +326,38 @@ const styles = {
   },
   chartContainer: {
     flex: 1,
-    height: '75vh', // 차트 컨테이너의 높이를 80% 뷰포트 높이로 설정합니다.
+    height: '80vh', // 차트 컨테이너의 높이를 80% 뷰포트 높이로 설정합니다.
   },
   articles: {
     flex: 1,
     marginTop: '20px',
     marginLeft: '20px',
-    textAlign: 'left',
+    textAlign: 'center',
+    overflowY: "auto", // 세로 스크롤바 활성화
+    maxHeight: "80vh", // 스크롤이 적용될 최대 높이
   },
   article: {
     display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottom: '1px solid #ddd',
-    paddingBottom: '10px',
-    marginBottom: '10px',
+    border: "1px solid #ccc",
+    borderRadius: "10px",
+    padding: "15px",
+    marginBottom: "15px",
+    backgroundColor: "#f9f9f9",
+
+  },
+  summary: {
+    cursor: "pointer",
+    textDecoration: "none",
+    color: "black",
+    transition: "color 0.3s ease",
+  },
+  summaryHover: {
+    color: "#888", // 요약 텍스트에 커서를 올렸을 때 연해지는 색상
   },
   expection: {
-    fontSize: '18px',
-    fontWeight: 'bold',
+    fontWeight: "bold",
+    fontSize: "20px",
+    marginTop: "10px",
   },
 };
 
