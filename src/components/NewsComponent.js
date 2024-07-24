@@ -42,6 +42,27 @@ const NewsComponent = ({ kakaoId }) => {
       });
   };
 
+  const handleRecommendClick = (summary) => {
+    fetch('http://52.78.53.98:8000/api/save-user-summary/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ summary, kakaoId }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log('Summary saved successfully');
+        } else {
+          console.error('Failed to save summary');
+        }
+      })
+      .catch(error => {
+        console.error('Error saving summary:', error);
+      });
+  };
+
   if (loading) {
     return <div className="loading">Loading...</div>; // 로딩 화면
   }
@@ -58,7 +79,7 @@ const NewsComponent = ({ kakaoId }) => {
           <div key={index} className="news-card" onClick={() => handleCardClick(news.summary[index])}>
             <div className="news-summary">{news.summary[index]}</div>
             <div className="news-actions">
-              <span className="icon">👍</span>
+              <span className="icon" onClick={() => handleRecommendClick(news.summary[index])}>👍</span>
               <span className="icon">👎</span>
             </div>
             <a href={url} target="_blank" rel="noopener noreferrer" className="news-link">Read Article</a>
