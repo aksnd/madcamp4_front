@@ -31,7 +31,7 @@ const ChatbotPage = () => {
             { sender: 'Bot', text: `뉴스 요약: ${response.data.newsSummary}` },
             ...response.data.relatedArticles.map((article, index) => ({
               sender: 'Bot',
-              text: `관련 기사 ${index + 1}: ${article}`,
+              text: `관련 기사 ${index + 1}: <a href="${article}" target="_blank" rel="noopener noreferrer">${article}</a>`,
             })),
           ]
         : [{ sender: 'Bot', text: response.data.answer }];
@@ -66,7 +66,8 @@ const ChatbotPage = () => {
         <Messages>
           {messages.map((msg, index) => (
             <Message key={index} sender={msg.sender}>
-              {msg.text}
+              {/* `dangerouslySetInnerHTML`를 사용하여 HTML을 렌더링합니다. */}
+              <div dangerouslySetInnerHTML={{ __html: msg.text }} />
             </Message>
           ))}
         </Messages>

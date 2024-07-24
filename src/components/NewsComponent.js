@@ -5,6 +5,7 @@ const NewsComponent = ({ kakaoId }) => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [relatedUsers, setRelatedUsers] = useState([]);
 
   useEffect(() => {
     // 맞춤 뉴스 URL을 가져오는 API 호출
@@ -25,6 +26,22 @@ const NewsComponent = ({ kakaoId }) => {
       });
   }, [kakaoId]);
 
+  const handleCardClick = (summary) => {
+    fetch(`http://52.78.53.98:8000/api/relevant-users/?query=${encodeURIComponent(summary)}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.users) {
+          setRelatedUsers(data.users);
+        } else {
+          setRelatedUsers([]);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching related users:', error);
+        setRelatedUsers([]);
+      });
+  };
+
   if (loading) {
     return <div className="loading">Loading...</div>; // 로딩 화면
   }
@@ -38,7 +55,7 @@ const NewsComponent = ({ kakaoId }) => {
       <h4 className="description">유저의 채팅 이력을 통해 뉴스를 추천드립니다.</h4>
       <div className="news-cards">
         {news.urls.map((url, index) => (
-          <div key={index} className="news-card">
+          <div key={index} className="news-card" onClick={() => handleCardClick(news.summary[index])}>
             <div className="news-summary">{news.summary[index]}</div>
             <div className="news-actions">
               <span className="icon">👍</span>
@@ -48,6 +65,16 @@ const NewsComponent = ({ kakaoId }) => {
           </div>
         ))}
       </div>
+      {relatedUsers.length > 0 && (
+        <div className="related-users">
+          <h4>이 기사를 관심 있어하는 유저들:</h4>
+          <ul>
+            {relatedUsers.map((user, index) => (
+              <li key={index}>{user}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
