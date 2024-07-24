@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -11,6 +11,8 @@ const ChatbotPage = () => {
   const [mode, setMode] = useState('chat'); // 'chat' or 'news'
 
   const kakaoId = localStorage.getItem('kakaoId'); // 카카오 아이디 가져오기
+
+  const messageEndRef = useRef(null);
 
   const handleSend = async () => {
     if (mode === 'chat' && input.trim() === '') return;
@@ -51,6 +53,10 @@ const ChatbotPage = () => {
     setNewsUrl('');
   };
 
+  useEffect(() => {
+    messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
   return (
     <Container>
       <Header>Stock Chatbot</Header>
@@ -70,6 +76,7 @@ const ChatbotPage = () => {
               <div dangerouslySetInnerHTML={{ __html: msg.text }} />
             </Message>
           ))}
+          <div ref={messageEndRef} /> {/* 메시지 끝 부분에 ref 추가 */}
         </Messages>
         <InputContainer>
           {mode === 'chat' ? (

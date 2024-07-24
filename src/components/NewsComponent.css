@@ -1,3 +1,63 @@
+/* 기존 스타일 */
+
+.related-users {
+  margin-top: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 15px;
+  width: 80%;
+  margin: 20px auto;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.related-users h4 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.users-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.user-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 120px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.user-card:hover {
+  transform: scale(1.05);
+}
+
+.user-avatar {
+  background-color: #007bff;
+  color: #fff;
+  font-size: 2rem;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px auto;
+}
+
+.user-id {
+  color: #333;
+  font-size: 1rem;
+  word-break: break-word;
+}
+
+/* 기존 스타일 유지 */
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f9;
@@ -63,9 +123,6 @@ body {
   width: 300px;
   padding: 20px;
   margin: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* 아이콘과 버튼을 카드의 바닥에 붙이기 위해 설정 */
   transition: transform 0.2s;
 }
 
@@ -77,16 +134,12 @@ body {
   font-size: 16px;
   margin-bottom: 10px;
   color: #333; /* 진한 색상으로 가시성 향상 */
-  flex-grow: 1; /* 요약이 가능한 만큼 자리를 차지하게 합니다. */
 }
 
 .news-actions {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-around;
   margin: 10px 0;
-  border-top: 1px solid #ddd; /* 상단 구분선 */
-  padding-top: 10px;
 }
 
 .icon {
@@ -103,7 +156,6 @@ body {
   text-decoration: none;
   border-radius: 5px;
   transition: background-color 0.3s;
-  margin-top: 10px;
 }
 
 .news-link:hover {
@@ -132,29 +184,4 @@ body {
 
 .news-link {
   background-color: var(--secondary-color);
-}
-
-.related-users {
-  margin-top: 20px;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 10px;
-  border-radius: 10px;
-  width: 80%;
-  margin: 20px auto;
-  text-align: center;
-}
-
-.related-users h4 {
-  margin-bottom: 10px;
-  color: #333;
-}
-
-.related-users ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.related-users li {
-  padding: 5px 0;
-  color: #007bff;
 }
