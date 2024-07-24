@@ -16,46 +16,32 @@ const ChatbotPage = () => {
     if (mode === 'chat' && input.trim() === '') return;
     if (mode === 'news' && newsUrl.trim() === '') return;
 
-    if (mode === 'chat') {
-      // Add user message to chat
-      setMessages([...messages, { sender: 'User', text: input }]);
-    } else {
-      // Add user message to chat with news URL
-      setMessages([...messages, { sender: 'User', text: newsUrl }]);
-    }
+    const userMessage = mode === 'chat' ? { sender: 'User', text: input } : { sender: 'User', text: newsUrl };
+    setMessages([...messages, userMessage]);
 
     try {
-      // Send user input, newsUrl, and kakaoId to backend
       const response = await axios.post('http://52.78.53.98:8000/api/chatbot/', {
         input,
         newsUrl,
         kakaoId,
       });
 
-      if (mode === 'news') {
-        // Add bot response with news summary and related articles
-        setMessages([
-          ...messages,
-          { sender: 'User', text: newsUrl },
-          { sender: 'Bot', text: `뉴스 요약: ${response.data.newsSummary}` },
-          ...response.data.relatedArticles.map((article, index) => ({
-            sender: 'Bot',
-            text: `관련 기사 ${index + 1}: ${article}`,
-          })),
-        ]);
-      } else {
-        // Add bot response to chat
-        setMessages([
-          ...messages,
-          { sender: 'User', text: input },
-          { sender: 'Bot', text: response.data.answer },
-        ]);
-      }
+      const botMessages = mode === 'news'
+        ? [
+            { sender: 'Bot', text: `뉴스 요약: ${response.data.newsSummary}` },
+            ...response.data.relatedArticles.map((article, index) => ({
+              sender: 'Bot',
+              text: `관련 기사 ${index + 1}: ${article}`,
+            })),
+          ]
+        : [{ sender: 'Bot', text: response.data.answer }];
+
+      setMessages([...messages, userMessage, ...botMessages]);
     } catch (error) {
       console.error('Error sending message:', error);
       setMessages([
         ...messages,
-        { sender: 'User', text: input || newsUrl },
+        userMessage,
         { sender: 'Bot', text: 'Sorry, something went wrong.' },
       ]);
     }
@@ -148,29 +134,41 @@ const ChatContainer = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  height: 500px;
+  height: 700px;
   width: 100%;
   max-width: 600px;
+  position: relative;
+  overflow: hidden;
 `;
 
 const Messages = styled.div`
   flex: 1;
   overflow-y: auto;
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 80px; /* Add padding to avoid overlap with input */
 `;
 
 const Message = styled.div`
   padding: 10px;
-  margin-bottom: 10px;
+  border-radius: 15px;
+  max-width: 60%;
   align-self: ${(props) => (props.sender === 'Bot' ? 'flex-start' : 'flex-end')};
   background-color: ${(props) => (props.sender === 'Bot' ? '#e9ecef' : '#007bff')};
   color: ${(props) => (props.sender === 'Bot' ? '#000' : '#fff')};
-  border-radius: 15px;
-  max-width: 70%;
+  word-break: break-word;
 `;
 
 const InputContainer = styled.div`
   display: flex;
+  gap: 10px;
+  padding: 10px 0;
+  background: #fff;
+  position: absolute;
+  bottom: 0;
+  width: calc(100% - 40px); /* Adjust width to fit within padding of ChatContainer */
+  border-top: 1px solid #dee2e6;
 `;
 
 const Input = styled.input`
@@ -178,7 +176,6 @@ const Input = styled.input`
   padding: 10px;
   border: 1px solid #dee2e6;
   border-radius: 10px;
-  margin-right: 10px;
 `;
 
 const Button = styled.button`

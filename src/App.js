@@ -32,7 +32,6 @@ function App() {
                       <Route path="/emotion" element={<EmotionPage />} />
                       <Route path="/chatbot" element={<ChatbotPage />} />
                       <Route path="/logout" element={<LogOutPage setKakaoId={setKakaoId} />} />
-                      <Route path="/predictor" element={<StockPredictor />} />
                       <Route path="/news" element={<NewsPage />} />
                   </>
               ) : (
