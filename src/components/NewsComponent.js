@@ -68,11 +68,14 @@ const NewsComponent = ({ kakaoId }) => {
       {relatedUsers.length > 0 && (
         <div className="related-users">
           <h4>이 기사를 관심 있어하는 유저들:</h4>
-          <ul>
+          <div className="users-grid">
             {relatedUsers.map((user, index) => (
-              <li key={index}>{user}</li>
+              <div key={index} className="user-card">
+                <div className="user-avatar">{user.charAt(0).toUpperCase()}</div>
+                <div className="user-id">{user}</div>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       )}
     </div>
