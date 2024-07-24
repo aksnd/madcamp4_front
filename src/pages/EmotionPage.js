@@ -125,7 +125,7 @@ function EmotionPage() {
     const data = await response.json();
     setPrice(null);
     setArticles(data.articles);
-    setHistoricalData(null);
+    setHistoricalData([]);
     setLoading(false);
     setSubmit(true);
   };
@@ -194,9 +194,8 @@ function EmotionPage() {
                  </div>
                 </div>):null}
                 <div style={styles.articles}>
-                  <h3>관련 기사</h3>
-                  <h3>평균 감정 점수: {calculateEmotionAverage().toFixed(2)}</h3>
-                  <h3>내일 주가 예측: {`${calculatefuture().toFixed(2)}% 변동`}</h3>
+                  <h2 style={{color: getEmotionColor(calculateEmotionAverage().toFixed(2))}}>평균 감정 점수: {calculateEmotionAverage().toFixed(2)}</h2>
+                  <h2>내일 주가 예측: {`${calculatefuture().toFixed(2)}% 변동`}</h2>
                   {articles.map((article, index) => (
                     <div key={index} style={styles.article}>
                       
@@ -307,7 +306,7 @@ const styles = {
     top: '10px',
     right: '10px',
     padding: '10px 20px',
-    backgroundColor: '#007bff',
+    backgroundColor: '#00AFFF',
     color: '#fff',
     border: 'none',
     borderRadius: '5px',
@@ -327,13 +326,15 @@ const styles = {
   },
   chartContainer: {
     flex: 1,
-    height: '75vh', // 차트 컨테이너의 높이를 80% 뷰포트 높이로 설정합니다.
+    height: '80vh', // 차트 컨테이너의 높이를 80% 뷰포트 높이로 설정합니다.
   },
   articles: {
     flex: 1,
     marginTop: '20px',
     marginLeft: '20px',
-    textAlign: 'left',
+    textAlign: 'center',
+    overflowY: "auto", // 세로 스크롤바 활성화
+    maxHeight: "80vh", // 스크롤이 적용될 최대 높이
   },
   article: {
     display: 'flex',
@@ -342,6 +343,7 @@ const styles = {
     padding: "15px",
     marginBottom: "15px",
     backgroundColor: "#f9f9f9",
+
   },
   summary: {
     cursor: "pointer",
