@@ -6,9 +6,10 @@ const NewsComponent = ({ kakaoId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [relatedUsers, setRelatedUsers] = useState([]);
+  const [feedbackMessage, setFeedbackMessage] = useState(''); // 추가된 상태
+  const [showFeedback, setShowFeedback] = useState(false); // 추가된 상태
 
   useEffect(() => {
-    // 맞춤 뉴스 URL을 가져오는 API 호출
     fetch(`http://52.78.53.98:8000/api/relevant-news/?kakao_id=${kakaoId}`)
       .then(response => response.json())
       .then(data => {
@@ -53,7 +54,7 @@ const NewsComponent = ({ kakaoId }) => {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          console.log('Summary saved successfully');
+          showFeedbackMessage('추천하였습니다'); // 추천 메시지 표시
         } else {
           console.error('Failed to save summary');
         }
@@ -63,12 +64,27 @@ const NewsComponent = ({ kakaoId }) => {
       });
   };
 
+  const handleDislikeClick = () => {
+    showFeedbackMessage('비추천하였습니다'); // 비추천 메시지 표시
+  };
+
+  const showFeedbackMessage = (message) => {
+    setFeedbackMessage(message);
+    setShowFeedback(true);
+    setTimeout(() => setShowFeedback(false), 2000); // 2초 후에 메시지 숨김
+  };
+
   if (loading) {
-    return <div className="loading">Loading...</div>; // 로딩 화면
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <div className="loading-text">Loading...</div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="error">{error}</div>; // 에러 메시지 표시
+    return <div className="error">{error}</div>;
   }
 
   return (
@@ -80,7 +96,7 @@ const NewsComponent = ({ kakaoId }) => {
             <div className="news-summary">{news.summary[index]}</div>
             <div className="news-actions">
               <span className="icon" onClick={() => handleRecommendClick(news.summary[index])}>👍</span>
-              <span className="icon">👎</span>
+              <span className="icon" onClick={handleDislikeClick}>👎</span>
             </div>
             <a href={url} target="_blank" rel="noopener noreferrer" className="news-link">Read Article</a>
           </div>
@@ -98,6 +114,9 @@ const NewsComponent = ({ kakaoId }) => {
             ))}
           </div>
         </div>
+      )}
+      {showFeedback && (
+        <div className="feedback-popup">{feedbackMessage}</div>
       )}
     </div>
   );
