@@ -27,6 +27,7 @@ ChartJS.register(
 function EmotionPage() {
   const [company, setCompany] = useState('');
   const [searchSubmitted, setSearchSubmitted] = useState(false);
+  const [hoverIndex, setHoverIndex] = useState(null);
 
   const navigate = useNavigate();
   const companies = [
@@ -51,6 +52,13 @@ function EmotionPage() {
     navigate(`/companyclick?company=${company}`);
   };
 
+  const handleMouseEnter = (index) => {
+    setHoverIndex(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoverIndex(null);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,10 +81,15 @@ function EmotionPage() {
             <button onClick={handleSubmit} style={styles.searchButton}>검색</button>
           </form>
           <div style={styles.companyList}>
-            {companies.map((company) => (
+            {companies.map((company, index) => (
               <div
                 key={company.name}
-                style={styles.companyItem}
+                style={{
+                  ...styles.companyItem,
+                  ...(hoverIndex === index ? styles.companyHover : {}),
+                }}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
                 onClick={() => handleCompanyClick(company.name)}
               >
                 <div style={styles.companyIcon}>{company.icon}</div>
@@ -126,7 +139,11 @@ const styles = {
     cursor: 'pointer',
     width: '200px',
     height: '200px',
+    backgroundColor: 'white',
     boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+  },
+  companyHover:{
+    backgroundColor: '#D3D3D3',
   },
   companyIcon: {
     fontSize: '50px',
