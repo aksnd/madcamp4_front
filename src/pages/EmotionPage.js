@@ -26,13 +26,7 @@ ChartJS.register(
 
 function EmotionPage() {
   const [company, setCompany] = useState('');
-  const [price, setPrice] = useState(null);
-  const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [searchSubmitted, setSearchSubmitted] = useState(false);
-  const [historicalData, setHistoricalData] = useState([]);
-  const [submit, setSubmit] = useState(false);
-  const [hoverIndex, setHoverIndex] = useState(null);
 
   const navigate = useNavigate();
   const companies = [
@@ -53,91 +47,18 @@ function EmotionPage() {
     { name: '금양', icon: '💰' },
     { name: '현대해상', icon: '🚢' },
   ];
-  // 마우스 올려두는것과 관련있는 함수
-  const handleMouseEnter = (index) => {
-    setHoverIndex(index);
-  };
-
-  const handleMouseLeave = () => {
-    setHoverIndex(null);
-  };
-
-  const handleClick = (link) => {
-    window.open(link, "_blank", "noopener noreferrer");
-  };
-
-  const getEmotionColor = (emotion) => {
-    if (emotion > 6) {
-      return "#f44336"; // 긍정적인 감정 (빨강)
-    } else if (emotion < 4) {
-      return "#2196f3"; // 부정적인 감정 (파랑)
-    } else {
-      return "#9e9e9e"; // 중립적인 감정 (회색)
-    }
-  };
-
   const handleCompanyClick = async (company) => {
     navigate(`/companyclick?company=${company}`);
   };
 
-  const chartData = {
-    labels: historicalData.map(entry => {
-      const date = new Date(entry.Date);
-      const month = date.getMonth() + 1; // 월은 0부터 시작하므로 1을 더합니다.
-      const day = date.getDate();
-      return `${month}/${day}`;
-    }),
-    datasets: [ 
-        {
-            label: `${company} Historical Price`,
-            data: historicalData.map(entry => entry.Close),
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
-        }
-    ]
-  };
-  const chartOptions = {
-    maintainAspectRatio: false,
-    scales: {
-      y: {
-        beginAtZero: false,
-        min: Math.min(...historicalData.map(entry => entry.Close)) * 0.9, // y축 최소값을 데이터의 최솟값보다 10% 낮게 설정
-        ticks: {
-          padding: 10, // y축의 숫자와 그래프 사이의 간격 추가
-        },
-      },
-    },
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     navigate(`/companysearch?company=${company}`);
   };
 
-  const handleReturnButton =() => {
-    setSubmit(false);
-    setLoading(false);
-    setSearchSubmitted(false);
-    setPrice(null);
-    setCompany('');
-    setArticles([]);
-    setHistoricalData([]);
-  }
-
-  const calculateEmotionAverage = () => {
-    if (articles.length === 0) return 0;
-    const totalEmotion = articles.reduce((sum, article) => sum + article.emotion, 0);
-    return totalEmotion / articles.length;
-  };
-
-  const calculatefuture =() =>{
-    return (calculateEmotionAverage()*0.001827563342034779-0.014634778434037208)*100;
-  }
-  
   return (
     <div style={styles.container}>
-      {!submit && !loading ? (
         <>
           <h1>원하는 회사를 선택하거나, 직접 입력해주세요</h1>
           <form style={searchSubmitted ? styles.searchFormSubmitted : styles.searchForm}>
@@ -164,46 +85,6 @@ function EmotionPage() {
             ))}
           </div>
         </>
-      ) : (
-        <>
-          {loading ? (
-            <div><CircularProgress /></div>
-          ) : (
-            <>
-              <div style={styles.result_container}>
-                <button style={styles.selectButton} onClick={handleReturnButton}>다른 회사 선택</button>
-                {price? (<div style={styles.result}>
-                 <h2>{company}의 오늘 가격: {price}</h2>
-                 <div style={styles.chartContainer}>
-                  <Line data={chartData} options={chartOptions} />
-                 </div>
-                </div>):null}
-                <div style={styles.articles}>
-                  <h2 style={{color: getEmotionColor(calculateEmotionAverage().toFixed(2))}}>평균 감정 점수: {calculateEmotionAverage().toFixed(2)}</h2>
-                  <h2>내일 주가 예측: {`${calculatefuture().toFixed(2)}% 변동`}</h2>
-                  {articles.map((article, index) => (
-                    <div key={index} style={styles.article}>
-                      
-                      <div
-                        onMouseEnter={() => handleMouseEnter(index)}
-                        onMouseLeave={handleMouseLeave}
-                        onClick={() => handleClick(article.link)}
-                      >
-                        <h4 style={{
-                          ...styles.summary,
-                          ...(hoverIndex === index ? styles.summaryHover : {}),
-                        }}
-                        >{article.summary}</h4>
-                        <p style={{...styles.expection, color: getEmotionColor(article.emotion)}}>기사 점수 평가:{article.emotion}점 으로 분석했어요!</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </>
-          )}
-        </>
-      )}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import {
     Chart as ChartJS,
@@ -24,6 +24,7 @@ import {
   );
   
 function CompanyClickPage() {
+    const navigate = useNavigate();
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const company = params.get('company');
@@ -109,6 +110,9 @@ function CompanyClickPage() {
         return "#9e9e9e"; // 중립적인 감정 (회색)
     }
     };
+    const handleReturnButton = () => {
+        navigate(`/emotion`);
+      };
     
     useEffect(() => {
       handleCompanyClick();
@@ -122,6 +126,7 @@ function CompanyClickPage() {
           ) : (
             <>
               <div style={styles.result_container}>
+                <button style={styles.selectButton} onClick={handleReturnButton}>다른 회사 선택</button>
                 {price? (<div style={styles.result}>
                  <h2>{company}의 오늘 가격: {price}</h2>
                  <div style={styles.chartContainer}>
