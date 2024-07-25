@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -9,8 +9,11 @@ const ChatbotPage = () => {
   const [input, setInput] = useState('');
   const [newsUrl, setNewsUrl] = useState('');
   const [mode, setMode] = useState('chat'); // 'chat' or 'news'
+  const [loading, setLoading] = useState(false); // 로딩 상태 추가
 
   const kakaoId = localStorage.getItem('kakaoId'); // 카카오 아이디 가져오기
+
+  const messageEndRef = useRef(null);
 
   const handleSend = async () => {
     if (mode === 'chat' && input.trim() === '') return;
@@ -18,6 +21,7 @@ const ChatbotPage = () => {
 
     const userMessage = mode === 'chat' ? { sender: 'User', text: input } : { sender: 'User', text: newsUrl };
     setMessages([...messages, userMessage]);
+    setLoading(true); // 로딩 상태 설정
 
     try {
       const response = await axios.post('http://52.78.53.98:8000/api/chatbot/', {
@@ -31,7 +35,7 @@ const ChatbotPage = () => {
             { sender: 'Bot', text: `뉴스 요약: ${response.data.newsSummary}` },
             ...response.data.relatedArticles.map((article, index) => ({
               sender: 'Bot',
-              text: `관련 기사 ${index + 1}: ${article}`,
+              text: `관련 기사 ${index + 1}: <a href="${article}" target="_blank" rel="noopener noreferrer">${article}</a>`,
             })),
           ]
         : [{ sender: 'Bot', text: response.data.answer }];
@@ -46,10 +50,15 @@ const ChatbotPage = () => {
       ]);
     }
 
-    // Clear input fields
+    // Clear input fields and reset loading state
     setInput('');
     setNewsUrl('');
+    setLoading(false);
   };
+
+  useEffect(() => {
+    messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   return (
     <Container>
@@ -66,9 +75,10 @@ const ChatbotPage = () => {
         <Messages>
           {messages.map((msg, index) => (
             <Message key={index} sender={msg.sender}>
-              {msg.text}
+              <div dangerouslySetInnerHTML={{ __html: msg.text }} />
             </Message>
           ))}
+          <div ref={messageEndRef} />
         </Messages>
         <InputContainer>
           {mode === 'chat' ? (
@@ -77,6 +87,7 @@ const ChatbotPage = () => {
               placeholder="Ask a question..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              disabled={loading} // 로딩 중일 때 비활성화
             />
           ) : (
             <Input
@@ -84,9 +95,12 @@ const ChatbotPage = () => {
               placeholder="Enter news URL..."
               value={newsUrl}
               onChange={(e) => setNewsUrl(e.target.value)}
+              disabled={loading} // 로딩 중일 때 비활성화
             />
           )}
-          <Button onClick={handleSend}>Send</Button>
+          <Button onClick={handleSend} disabled={loading}> {/* 로딩 중일 때 버튼 비활성화 */}
+            {loading ? <Spinner /> : 'Send'} {/* 로딩 중일 때 스피너 표시 */}
+          </Button>
         </InputContainer>
       </ChatContainer>
     </Container>
@@ -147,7 +161,7 @@ const Messages = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding-bottom: 80px; /* Add padding to avoid overlap with input */
+  padding-bottom: 80px;
 `;
 
 const Message = styled.div`
@@ -167,7 +181,7 @@ const InputContainer = styled.div`
   background: #fff;
   position: absolute;
   bottom: 0;
-  width: calc(100% - 40px); /* Adjust width to fit within padding of ChatContainer */
+  width: calc(100% - 40px);
   border-top: 1px solid #dee2e6;
 `;
 
@@ -185,9 +199,31 @@ const Button = styled.button`
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 
   &:hover {
     background: #0056b3;
+  }
+
+  &:disabled {
+    background: #ced4da;
+    cursor: not-allowed;
+  }
+`;
+
+const Spinner = styled.div`
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 `;
 
