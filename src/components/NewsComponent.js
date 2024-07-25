@@ -32,7 +32,9 @@ const NewsComponent = ({ kakaoId }) => {
       .then(response => response.json())
       .then(data => {
         if (data && data.users) {
-          setRelatedUsers(data.users);
+          // 중복된 유저를 제거하기 위해 Set을 사용합니다.
+          const uniqueUsers = Array.from(new Set(data.users));
+          setRelatedUsers(uniqueUsers);
         } else {
           setRelatedUsers([]);
         }
