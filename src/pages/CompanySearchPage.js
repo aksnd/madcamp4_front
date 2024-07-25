@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 function CompanySearchPage() {
+    const navigate = useNavigate();
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const company = params.get('company');
@@ -57,6 +58,9 @@ function CompanySearchPage() {
         return "#9e9e9e"; // 중립적인 감정 (회색)
     }
     };
+    const handleReturnButton = () => {
+      navigate(`/emotion`);
+    };
     
     useEffect(() => {
       handleSubmit();
@@ -70,6 +74,7 @@ function CompanySearchPage() {
           ) : (
             <>
               <div style={styles.result_container}>
+                <button style={styles.selectButton} onClick={handleReturnButton}>다른 회사 선택</button>
                 <div style={styles.articles}>
                   <h2 style={{color: getEmotionColor(calculateEmotionAverage().toFixed(2))}}>평균 감정 점수: {calculateEmotionAverage().toFixed(2)}</h2>
                   <h2>내일 주가 예측: {`${calculatefuture().toFixed(2)}% 변동`}</h2>
@@ -144,10 +149,6 @@ const styles = {
       marginRight: '20px',
       flexDirection: 'column',
       display: 'flex',
-    },
-    chartContainer: {
-      flex: 1,
-      height: '80vh', // 차트 컨테이너의 높이를 80% 뷰포트 높이로 설정합니다.
     },
     articles: {
       flex: 1,

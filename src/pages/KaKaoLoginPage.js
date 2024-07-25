@@ -82,7 +82,7 @@ const KakaoLogin = () => {
         <AppContainer>
             <Overlay>
                 <TextContainer>
-                    <h1>Stock Insights에 오신 것을 환영합니다</h1>
+                    <h1>Stocking에 오신 것을 환영합니다</h1>
                     <p>"주식 시장은 모든 것의 가격을 알지만, 아무것도 알지 못하는 사람들로 가득 차 있다." – 필립 피셔</p>
                     <p>"투자에서 편안함은 드물게 수익성을 동반한다." – 로버트 아노트</p>
                 </TextContainer>
