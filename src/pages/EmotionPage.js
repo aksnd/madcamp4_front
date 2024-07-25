@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../App.css'; // CSS 파일 import
 import CircularProgress from '@mui/material/CircularProgress';
 import {
@@ -33,7 +34,7 @@ function EmotionPage() {
   const [submit, setSubmit] = useState(false);
   const [hoverIndex, setHoverIndex] = useState(null);
 
-
+  const navigate = useNavigate();
   const companies = [
     { name: '삼성전자', icon: '📱' },
     { name: 'SK하이닉스', icon: '🔌' }, 
@@ -76,15 +77,7 @@ function EmotionPage() {
   };
 
   const handleCompanyClick = async (company) => {
-    setCompany(company);
-    setLoading(true);
-    const response = await fetch(`http://52.78.53.98:8000/predict/?company=${company}`);
-    const data = await response.json();
-    setPrice(data.price);
-    setHistoricalData(data.historical_data);
-    setArticles(data.articles);
-    setLoading(false);
-    setSubmit(true);
+    navigate(`/companyclick?company=${company}`);
   };
 
   const chartData = {
@@ -119,15 +112,7 @@ function EmotionPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setSearchSubmitted(true);
-    const response = await fetch(`http://52.78.53.98:8000/emotion/?company=${company}`);
-    const data = await response.json();
-    setPrice(null);
-    setArticles(data.articles);
-    setHistoricalData([]);
-    setLoading(false);
-    setSubmit(true);
+    navigate(`/companysearch?company=${company}`);
   };
 
   const handleReturnButton =() => {

@@ -9,6 +9,8 @@ import KakaoLogin from './pages/KaKaoLoginPage';
 import LoginSuccessPage from './pages/LoginSuccessPage';
 import LogOutPage from './pages/LogOutPage';
 import NewsPage from './pages/NewsPage';
+import CompanyClickPage from './pages/CompanyClickPage';
+import CompanySearchPage from './pages/CompanySearchPage';
 
 
 function App() {
@@ -33,6 +35,8 @@ function App() {
                       <Route path="/chatbot" element={<ChatbotPage />} />
                       <Route path="/logout" element={<LogOutPage setKakaoId={setKakaoId} />} />
                       <Route path="/news" element={<NewsPage />} />
+                      <Route path="/companyclick" element={<CompanyClickPage />} />
+                      <Route path="/companysearch" element={<CompanySearchPage />} />
                   </>
               ) : (
                   <Route path="*" element={<KakaoLogin />} />
