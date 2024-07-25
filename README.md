@@ -21,8 +21,8 @@ Server: AWS EC2
 ---
 
 ### 로그인 페이지
+<img width="1430" alt="login" src="https://github.com/user-attachments/assets/0b30ff40-02be-4f1e-b724-260e22cddd75">
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/f34e4f50-38f4-4cb0-833e-49c6422cdd7a/Untitled.png)
 
 로그인 되지 않은 상태에 접속하면 들어가지는 화면
 
@@ -30,23 +30,25 @@ Server: AWS EC2
 
 ### DrawerMenu
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/a3770e5e-8c6d-4f05-97b3-842c71c423ae/Untitled.png)
+<img width="160" alt="drawer" src="https://github.com/user-attachments/assets/f29c68c4-005f-4144-ad15-2af9770c1155">
+
 
 DrawerMenu의 경우 각 페이지로의 이동을 담당하며, 각 페이지와 로그아웃 버튼이 존재함.
 
 ### 메인 페이지
+<img width="482" alt="main" src="https://github.com/user-attachments/assets/7e0e52e0-27b2-44ae-92b3-affd39ebb727">
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/90fe96cd-cef3-4848-bc71-7904c8192334/Untitled.png)
+
 
 메인 페이지에는 관심사를 입력하면 회사를 추천 받을  수 있는 기능 존재
 
 해당 기능을 통해 추천 받은 기업 페이지로 넘어갈 수 있음
 
 ### 회사 페이지
+<img width="647" alt="company1" src="https://github.com/user-attachments/assets/eda76da7-6ec4-4882-b23a-c1e609c8bfd2">
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/e46fc269-447b-4092-b2f0-de4256ec8d0e/Untitled.png)
+<img width="1430" alt="company2" src="https://github.com/user-attachments/assets/781dc3e3-2114-4a74-bcaf-21c09dc282b9">
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/125a960d-7aac-4238-8ea0-42b0a996a53c/Untitled.png)
 
 기업을 직접 쳐서 검색하거나, 미리 정해둔 16개 기업 중 하나를 선택했을 때, 해당 기업에 대한 정보를 보여줌. 
 
@@ -55,18 +57,18 @@ DrawerMenu의 경우 각 페이지로의 이동을 담당하며, 각 페이지�
 미리 정해둔 16개 기업의 경우, 해당 기업의 주가 차트도 같이 띄워둠.
 
 ### 챗봇 페이지
+<img width="427" alt="chatbot1" src="https://github.com/user-attachments/assets/5d1e972f-7666-4cb3-b833-144c2034899a">
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/76a6fa7b-70ae-4986-a418-efe97d1d677b/Untitled.png)
+<img width="412" alt="chatbot2" src="https://github.com/user-attachments/assets/4097f8bd-a0bb-4911-849c-7acdfcd3517b">
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/4a81fb37-e5d1-4ddc-a7cc-ed7f59448e09/Untitled.png)
 
 주식과 관련된 자유로운 질문을 할 수 있는 질문 모드, 뉴스 url을 입력해 뉴스 본문 요약과 관련 기사를 돌려 받을 수 있는 뉴스 모드가 존재한다.
 
 langchain을 이용해 미리 db에 크롤링한 뉴스 기사를 기반으로 한 RAG를 구현하여 llm으로부터 각종 최신 뉴스들과 관련 깊은 대답을 들을 수 있다.
 
 ### 기사 추천 페이지
+<img width="767" alt="recommend1" src="https://github.com/user-attachments/assets/327a173e-658e-4efa-bcb8-6d760035c45b">
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/a5dddcf5-0338-4de0-b9b9-c27ff76ee833/Untitled.png)
 
 챗봇 페이지에서 유저가 제공한 질문들과 뉴스 기사들을 유저 데이터베이스에 따로 임베딩하여 저장함으로써, 유저 맞춤형 기사들을 similarity search하고 제공할 수 있다.
 
