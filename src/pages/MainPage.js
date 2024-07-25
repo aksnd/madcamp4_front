@@ -9,6 +9,12 @@ function MainPage() {
   const [recommendation, setRecommendation] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const COMPANY_LIST = [
+    '삼성전자', 'SK하이닉스', 'LG에너지솔루션', '삼성바이오로직스', '현대차', 
+    '기아', '셀트리온', 'KB금융', 'POSCO홀딩스', 'NAVER', '삼성생명', 
+    'LG전자', '한화오션', '고려아연', '금양', '현대해상'
+  ];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -20,6 +26,13 @@ function MainPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRedirect = () => {
+    const url = COMPANY_LIST.includes(recommendation) 
+      ? `http://localhost:3002/companyclick?company=${recommendation}`
+      : `http://localhost:3002/companysearch?company=${recommendation}`;
+    window.location.href = url;
   };
 
   return (
@@ -39,11 +52,7 @@ function MainPage() {
         {!loading && recommendation && (
           <ResultContainer>
             <RecommendationTitle>당신에게 추천드리는 회사는 {recommendation}입니다!</RecommendationTitle>
-            <Articles>
-              <Article>관련 기사 1</Article>
-              <Article>관련 기사 2</Article>
-              <Article>관련 기사 3</Article>
-            </Articles>
+            <RedirectButton onClick={handleRedirect}>관련 정보 보러 가기</RedirectButton>
           </ResultContainer>
         )}
       </ContentContainer>
@@ -135,20 +144,18 @@ const RecommendationTitle = styled.h2`
   margin-bottom: 20px;
 `;
 
-const Articles = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+const RedirectButton = styled.button`
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 25px;
+  border: none;
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
 
-const Article = styled.div`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  width: 300px;
-  text-align: center;
-  background-color: #f9f9f9;
+  &:hover {
+    background-color: #218838;
+  }
 `;
 
 export default MainPage;
